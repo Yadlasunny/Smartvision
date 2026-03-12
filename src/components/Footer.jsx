@@ -124,7 +124,7 @@ export default function Footer() {
               <div>
                 <p className="text-xs text-gray-600 uppercase tracking-widest mb-1">Office</p>
                 <a
-                  href="https://maps.google.com/?q=KT+Mansion+3-6-645+Himayatnagar+Hyderabad+500029"
+                  href="https://www.google.com/maps/search/?api=1&query=Smart+Vision+HR+Solutions+Himayatnagar+Hyderabad"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-gray-400 hover:text-[#2EE6D6] transition-colors leading-relaxed"

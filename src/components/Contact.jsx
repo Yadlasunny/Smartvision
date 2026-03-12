@@ -24,7 +24,7 @@ const contactInfo = [
     icon: FaMapMarkerAlt,
     label: "Office",
     value: "First Floor, K T Mansion, 3-6-645, Street No. 1, Himayatnagar, Hyderabad – 500029",
-    href: "https://maps.google.com/?q=KT+Mansion+3-6-645+Himayatnagar+Hyderabad+500029",
+    href: "https://www.google.com/maps/search/?api=1&query=Smart+Vision+HR+Solutions+Himayatnagar+Hyderabad",
     external: true,
     color: "#2EE6D6",
   },
@@ -132,7 +132,7 @@ export default function Contact() {
               <p className="text-gray-400 text-sm mb-1">Street No. 1, Himayatnagar,</p>
               <p className="text-gray-400 text-sm mb-6">Hyderabad – 500029, Telangana</p>
               <a
-                href="https://maps.google.com/?q=KT+Mansion+3-6-645+Himayatnagar+Hyderabad+500029"
+                href="https://www.google.com/maps/search/?api=1&query=Smart+Vision+HR+Solutions+Himayatnagar+Hyderabad"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[#2EE6D6] hover:underline"
