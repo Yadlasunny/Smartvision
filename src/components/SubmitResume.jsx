@@ -1,7 +1,12 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { FaUpload, FaCheckCircle } from "react-icons/fa";
+import { FaUpload, FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
+
+// ─── Web3Forms access key ───────────────────────────────────────────────────
+// Get your FREE key at https://web3forms.com/ using smartvisionhrsolutions@gmail.com
+const WEB3FORMS_KEY = "e61245cf-898f-420b-b612-5234ecdffd31";
+// ────────────────────────────────────────────────────────────────────────────
 
 const inputClass =
   "w-full px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#2EE6D6]/60 focus:bg-white/8 transition-all duration-200 text-sm";
@@ -11,8 +16,11 @@ const labelClass = "block text-sm font-medium text-gray-300 mb-2";
 export default function SubmitResume() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const fileInputRef = useRef(null);
   const [fileName, setFileName] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     name: "", email: "", phone: "", experience: "", location: "",
   });
@@ -23,9 +31,41 @@ export default function SubmitResume() {
     if (e.target.files[0]) setFileName(e.target.files[0].name);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setError("");
+    setLoading(true);
+
+    try {
+      const data = new FormData();
+      data.append("access_key", WEB3FORMS_KEY);
+      data.append("subject", `New Resume Submission – ${form.name} (${form.experience} exp)`);
+      data.append("from_name", "Smart Vision HR – Resume Form");
+      data.append("name", form.name);
+      data.append("email", form.email);
+      data.append("phone", form.phone);
+      data.append("experience", form.experience);
+      data.append("preferred_location", form.location);
+
+      const file = fileInputRef.current?.files[0];
+      if (file) data.append("resume", file);
+
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: data,
+      });
+
+      const result = await res.json();
+      if (result.success) {
+        setSubmitted(true);
+      } else {
+        setError(result.message || "Submission failed. Please try again.");
+      }
+    } catch {
+      setError("Network error. Please check your connection and try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -161,6 +201,7 @@ export default function SubmitResume() {
                     <input
                       type="file"
                       accept=".pdf,.doc,.docx"
+                      ref={fileInputRef}
                       onChange={handleFile}
                       required
                       className="sr-only"
@@ -180,13 +221,36 @@ export default function SubmitResume() {
                   </label>
                 </div>
 
+                {/* Error message */}
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/25 text-red-400 text-sm"
+                  >
+                    <FaExclamationCircle size={14} className="flex-shrink-0" />
+                    {error}
+                  </motion.div>
+                )}
+
                 <motion.button
                   type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full py-4 rounded-xl bg-[#2EE6D6] text-black font-bold text-base hover:bg-[#1bc9b9] transition-all duration-200 btn-glow mt-2"
+                  disabled={loading}
+                  whileHover={{ scale: loading ? 1 : 1.02 }}
+                  whileTap={{ scale: loading ? 1 : 0.98 }}
+                  className="w-full py-4 rounded-xl bg-[#2EE6D6] text-black font-bold text-base hover:bg-[#1bc9b9] transition-all duration-200 btn-glow mt-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  Submit Resume →
+                  {loading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                      </svg>
+                      Submitting…
+                    </span>
+                  ) : (
+                    "Submit Resume →"
+                  )}
                 </motion.button>
               </form>
             ) : (

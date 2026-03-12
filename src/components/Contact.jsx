@@ -7,22 +7,25 @@ const contactInfo = [
   {
     icon: FaPhone,
     label: "Phone",
-    value: "+91 98765 43210",
-    href: "tel:+919876543210",
+    value: "+91 78939 26574",
+    href: "tel:+917893926574",
+    external: false,
     color: "#2EE6D6",
   },
   {
     icon: FaEnvelope,
     label: "Email",
-    value: "info@smartvisionhr.com",
-    href: "mailto:info@smartvisionhr.com",
+    value: "smartvisionhrsolutions@gmail.com",
+    href: "mailto:smartvisionhrsolutions@gmail.com",
+    external: true,
     color: "#F5B400",
   },
   {
     icon: FaMapMarkerAlt,
     label: "Office",
-    value: "MG Road, Bangalore – 560001, Karnataka",
-    href: "#",
+    value: "First Floor, K T Mansion, 3-6-645, Street No. 1, Himayatnagar, Hyderabad – 500029",
+    href: "https://maps.google.com/?q=KT+Mansion+3-6-645+Himayatnagar+Hyderabad+500029",
+    external: true,
     color: "#2EE6D6",
   },
 ];
@@ -65,11 +68,13 @@ export default function Contact() {
                 <motion.a
                   key={item.label}
                   href={item.href}
+                  target={item.external ? "_blank" : undefined}
+                  rel={item.external ? "noopener noreferrer" : undefined}
                   initial={{ opacity: 0, x: -30 }}
                   animate={inView ? { opacity: 1, x: 0 } : {}}
                   transition={{ duration: 0.55, delay: i * 0.12 }}
                   whileHover={{ x: 6 }}
-                  className="flex items-start gap-5 p-6 rounded-2xl glass border border-white/10 card-glow-hover transition-all duration-300 group"
+                  className="flex items-start gap-5 p-6 rounded-2xl glass border border-white/10 card-glow-hover transition-all duration-300 group cursor-pointer"
                 >
                   <div
                     className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
@@ -81,7 +86,7 @@ export default function Contact() {
                     <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1">
                       {item.label}
                     </p>
-                    <p className="text-white font-medium group-hover:text-[#2EE6D6] transition-colors">
+                    <p className={`font-medium transition-colors ${item.href !== "#" ? "text-[#2EE6D6] group-hover:underline" : "text-white group-hover:text-[#2EE6D6]"}`}>
                       {item.value}
                     </p>
                   </div>
@@ -91,7 +96,7 @@ export default function Contact() {
 
             {/* WhatsApp CTA */}
             <motion.a
-              href="https://wa.me/919876543210"
+              href="https://wa.me/917893926574?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20your%20HR%20services."
               target="_blank"
               rel="noopener noreferrer"
               initial={{ opacity: 0, x: -30 }}
@@ -123,10 +128,11 @@ export default function Contact() {
                 <FaMapMarkerAlt size={28} className="text-[#2EE6D6]" />
               </div>
               <h3 className="text-xl font-bold text-white mb-2">Smart Vision HR Solutions</h3>
-              <p className="text-gray-400 text-sm mb-1">MG Road, Bangalore – 560001</p>
-              <p className="text-gray-400 text-sm mb-6">Karnataka, India</p>
+              <p className="text-gray-400 text-sm mb-1">First Floor, K T Mansion, 3-6-645,</p>
+              <p className="text-gray-400 text-sm mb-1">Street No. 1, Himayatnagar,</p>
+              <p className="text-gray-400 text-sm mb-6">Hyderabad – 500029, Telangana</p>
               <a
-                href="https://maps.google.com"
+                href="https://maps.google.com/?q=KT+Mansion+3-6-645+Himayatnagar+Hyderabad+500029"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[#2EE6D6] hover:underline"

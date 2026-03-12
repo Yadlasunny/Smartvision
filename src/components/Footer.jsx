@@ -23,8 +23,8 @@ const servicesLinks = [
 
 const socials = [
   { icon: FaLinkedin, href: "https://linkedin.com", label: "LinkedIn", color: "#0077b5" },
-  { icon: FaInstagram, href: "https://instagram.com", label: "Instagram", color: "#e1306c" },
-  { icon: FaWhatsapp, href: "https://wa.me/919876543210", label: "WhatsApp", color: "#25d366" },
+  { icon: FaInstagram, href: "https://www.instagram.com/smart_vision_jobs?igsh=djU2bTlydnB4bnd0", label: "Instagram", color: "#e1306c" },
+  { icon: FaWhatsapp, href: "https://wa.me/917893926574?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20your%20HR%20services.", label: "WhatsApp", color: "#25d366" },
 ];
 
 export default function Footer() {
@@ -111,19 +111,28 @@ export default function Footer() {
             <div className="space-y-4">
               <div>
                 <p className="text-xs text-gray-600 uppercase tracking-widest mb-1">Phone</p>
-                <a href="tel:+919876543210" className="text-sm text-gray-400 hover:text-[#2EE6D6] transition-colors">
-                  +91 98765 43210
+                <a href="tel:+917893926574" className="text-sm text-gray-400 hover:text-[#2EE6D6] transition-colors">
+                  +91 78939 26574
                 </a>
               </div>
               <div>
                 <p className="text-xs text-gray-600 uppercase tracking-widest mb-1">Email</p>
-                <a href="mailto:info@smartvisionhr.com" className="text-sm text-gray-400 hover:text-[#2EE6D6] transition-colors">
-                  info@smartvisionhr.com
+                <a href="mailto:smartvisionhrsolutions@gmail.com" className="text-sm text-gray-400 hover:text-[#2EE6D6] transition-colors">
+                  smartvisionhrsolutions@gmail.com
                 </a>
               </div>
               <div>
                 <p className="text-xs text-gray-600 uppercase tracking-widest mb-1">Office</p>
-                <p className="text-sm text-gray-400">MG Road, Bangalore – 560001</p>
+                <a
+                  href="https://maps.google.com/?q=KT+Mansion+3-6-645+Himayatnagar+Hyderabad+500029"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-gray-400 hover:text-[#2EE6D6] transition-colors leading-relaxed"
+                >
+                  First Floor, K T Mansion, 3-6-645,<br />
+                  Street No. 1, Himayatnagar,<br />
+                  Hyderabad – 500029, Telangana
+                </a>
               </div>
             </div>
 
