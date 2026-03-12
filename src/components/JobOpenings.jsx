@@ -120,7 +120,7 @@ export default function JobOpenings() {
             whileTap={{ scale: 0.97 }}
             className="px-8 py-3.5 rounded-full border border-[#F5B400]/40 text-[#F5B400] font-semibold hover:bg-[#F5B400] hover:text-black transition-all duration-300 btn-glow-yellow"
           >
-            {showAll ? "Show Less ↑" : `View All Openings (${jobs.length}) →`}
+            {showAll ? "Show Less ↑" : "View All Openings →"}
           </motion.button>
         </motion.div>
         )}
