@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { FaMapMarkerAlt, FaBriefcase, FaArrowRight } from "react-icons/fa";
 import { useJobs } from "../context/JobsContext";
 
@@ -17,6 +17,9 @@ export default function JobOpenings() {
   const { jobs } = useJobs();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const [showAll, setShowAll] = useState(false);
+
+  const visibleJobs = showAll ? jobs : jobs.slice(0, 3);
 
   return (
     <section id="jobs" className="bg-[#111111] section-pad">
@@ -46,7 +49,8 @@ export default function JobOpenings() {
 
         {/* Jobs grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {jobs.map((job, i) => (
+          <AnimatePresence mode="popLayout">
+          {visibleJobs.map((job, i) => (
             <motion.div
               key={i}
               variants={cardVariants}
@@ -99,9 +103,11 @@ export default function JobOpenings() {
               </motion.button>
             </motion.div>
           ))}
+          </AnimatePresence>
         </div>
 
         {/* View all button */}
+        {jobs.length > 3 && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
@@ -109,13 +115,15 @@ export default function JobOpenings() {
           className="text-center mt-12"
         >
           <motion.button
+            onClick={() => setShowAll(!showAll)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
             className="px-8 py-3.5 rounded-full border border-[#F5B400]/40 text-[#F5B400] font-semibold hover:bg-[#F5B400] hover:text-black transition-all duration-300 btn-glow-yellow"
           >
-            View All Openings →
+            {showAll ? "Show Less ↑" : `View All Openings (${jobs.length}) →`}
           </motion.button>
         </motion.div>
+        )}
       </div>
     </section>
   );
