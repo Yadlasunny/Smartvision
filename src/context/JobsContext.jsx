@@ -66,16 +66,28 @@ const defaultJobs = [
 const JobsContext = createContext(null);
 
 export function JobsProvider({ children }) {
-  const [jobs, setJobs] = useState(defaultJobs);
+  const [jobs, setJobs] = useState(() => {
+    try {
+      const stored = localStorage.getItem("sv_jobs");
+      return stored ? JSON.parse(stored) : defaultJobs;
+    } catch {
+      return defaultJobs;
+    }
+  });
+
+  const saveJobs = (updated) => {
+    setJobs(updated);
+    localStorage.setItem("sv_jobs", JSON.stringify(updated));
+  };
 
   const addJob = (job) =>
-    setJobs((prev) => [...prev, { ...job, id: Date.now() }]);
+    saveJobs([...jobs, { ...job, id: Date.now() }]);
 
   const updateJob = (id, updated) =>
-    setJobs((prev) => prev.map((j) => (j.id === id ? { ...j, ...updated } : j)));
+    saveJobs(jobs.map((j) => (j.id === id ? { ...j, ...updated } : j)));
 
   const deleteJob = (id) =>
-    setJobs((prev) => prev.filter((j) => j.id !== id));
+    saveJobs(jobs.filter((j) => j.id !== id));
 
   return (
     <JobsContext.Provider value={{ jobs, addJob, updateJob, deleteJob }}>
