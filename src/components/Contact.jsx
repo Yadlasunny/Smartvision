@@ -111,33 +111,36 @@ export default function Contact() {
             </motion.a>
           </div>
 
-          {/* Map / visual placeholder */}
+          {/* Embedded Google Map */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="rounded-3xl glass border border-white/10 overflow-hidden min-h-[360px] relative flex items-center justify-center"
+            className="rounded-3xl overflow-hidden min-h-[420px] relative border border-white/10"
+            style={{ boxShadow: "0 0 30px rgba(46,230,214,0.06)" }}
           >
-            {/* Decorative map placeholder */}
-            <div className="absolute inset-0 opacity-[0.04]" style={{
-              backgroundImage: "linear-gradient(rgba(46,230,214,1) 1px,transparent 1px),linear-gradient(90deg,rgba(46,230,214,1) 1px,transparent 1px)",
-              backgroundSize: "30px 30px",
-            }} />
-            <div className="relative z-10 text-center p-8">
-              <div className="w-16 h-16 rounded-full bg-[#2EE6D6]/10 border border-[#2EE6D6]/30 flex items-center justify-center mx-auto mb-5">
-                <FaMapMarkerAlt size={28} className="text-[#2EE6D6]" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Smart Vision HR Solutions</h3>
-              <p className="text-gray-400 text-sm mb-1">First Floor, K T Mansion, 3-6-645,</p>
-              <p className="text-gray-400 text-sm mb-1">Street No. 1, Himayatnagar,</p>
-              <p className="text-gray-400 text-sm mb-6">Hyderabad – 500029, Telangana</p>
+            <iframe
+              title="Smart Vision HR Solutions Location"
+              src="https://maps.google.com/maps?q=Smart+Vision+HR+Solutions,+Himayatnagar,+Hyderabad,+Telangana+500029&output=embed&z=16"
+              width="100%"
+              height="100%"
+              style={{ border: 0, minHeight: "420px", filter: "invert(90%) hue-rotate(180deg)" }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+            {/* Overlay label */}
+            <div className="absolute bottom-0 left-0 right-0 px-5 py-4"
+              style={{ background: "linear-gradient(to top, rgba(11,11,11,0.95), transparent)" }}>
+              <p className="text-white font-bold text-sm">Smart Vision HR Solutions</p>
+              <p className="text-gray-400 text-xs mt-0.5">Himayatnagar, Hyderabad – 500029</p>
               <a
                 href="https://www.google.com/maps/search/?api=1&query=Smart+Vision+HR+Solutions+Himayatnagar+Hyderabad"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[#2EE6D6] hover:underline"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#2EE6D6] hover:underline mt-1"
               >
-                View on Google Maps →
+                Open in Google Maps →
               </a>
             </div>
           </motion.div>
