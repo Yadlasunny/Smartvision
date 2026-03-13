@@ -130,7 +130,7 @@ export default function SubmitResume() {
                       name="name"
                       value={form.name}
                       onChange={handleChange}
-                      placeholder="John Doe"
+                      placeholder="Your Name"
                       required
                       className={inputClass}
                     />
@@ -142,7 +142,7 @@ export default function SubmitResume() {
                       name="email"
                       value={form.email}
                       onChange={handleChange}
-                      placeholder="john@email.com"
+                      placeholder="your.email@example.com"
                       required
                       className={inputClass}
                     />
@@ -157,7 +157,7 @@ export default function SubmitResume() {
                       name="phone"
                       value={form.phone}
                       onChange={handleChange}
-                      placeholder="+91 98765 43210"
+                      placeholder="+91 12345 67890"
                       required
                       className={inputClass}
                     />

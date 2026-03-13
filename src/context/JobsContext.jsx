@@ -1,5 +1,13 @@
 import { createContext, useContext, useState } from "react";
 
+const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+const isJobActive = (job, now = Date.now()) => {
+  // Legacy jobs without createdAt stay visible until manually removed.
+  if (!job.createdAt) return true;
+  return now - new Date(job.createdAt).getTime() < ONE_WEEK_MS;
+};
+
 const defaultJobs = [
   {
     id: 1,
@@ -81,7 +89,14 @@ export function JobsProvider({ children }) {
   };
 
   const addJob = (job) =>
-    saveJobs([...jobs, { ...job, id: Date.now() }]);
+    saveJobs([
+      ...jobs,
+      {
+        ...job,
+        id: Date.now(),
+        createdAt: new Date().toISOString(),
+      },
+    ]);
 
   const updateJob = (id, updated) =>
     saveJobs(jobs.map((j) => (j.id === id ? { ...j, ...updated } : j)));
@@ -89,8 +104,10 @@ export function JobsProvider({ children }) {
   const deleteJob = (id) =>
     saveJobs(jobs.filter((j) => j.id !== id));
 
+  const activeJobs = jobs.filter((job) => isJobActive(job));
+
   return (
-    <JobsContext.Provider value={{ jobs, addJob, updateJob, deleteJob }}>
+    <JobsContext.Provider value={{ jobs, activeJobs, addJob, updateJob, deleteJob }}>
       {children}
     </JobsContext.Provider>
   );

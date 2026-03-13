@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-scroll";
 import { Link as RouterLink } from "react-router-dom";
+import { useState } from "react";
 import { FaLinkedin, FaInstagram, FaWhatsapp, FaLock } from "react-icons/fa";
 
 const quickLinks = [
@@ -28,6 +29,30 @@ const socials = [
 ];
 
 export default function Footer() {
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterMessage, setNewsletterMessage] = useState("");
+
+  const handleNewsletterSubmit = (e) => {
+    e.preventDefault();
+
+    const email = newsletterEmail.trim();
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if (!isValidEmail) {
+      setNewsletterMessage("Please enter a valid email address.");
+      return;
+    }
+
+    const subject = encodeURIComponent("Newsletter Subscription Request");
+    const body = encodeURIComponent(
+      `Hello SMART VISION HR SOLUTIONS,\n\nPlease subscribe this email for updates:\n${email}\n\nThank you.`
+    );
+
+    window.location.href = `mailto:smartvisionhrsolutions@gmail.com?subject=${subject}&body=${body}`;
+    setNewsletterMessage("Opening your email app to complete subscription.");
+    setNewsletterEmail("");
+  };
+
   return (
     <footer className="bg-[#080808] border-t border-white/5">
       {/* Main footer */}
@@ -139,20 +164,30 @@ export default function Footer() {
             {/* Newsletter */}
             <div className="mt-6">
               <p className="text-xs text-gray-600 uppercase tracking-widest mb-3">Stay Updated</p>
-              <div className="flex gap-2">
+              <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
                 <input
                   type="email"
                   placeholder="Your email"
+                  value={newsletterEmail}
+                  onChange={(e) => {
+                    setNewsletterEmail(e.target.value);
+                    if (newsletterMessage) setNewsletterMessage("");
+                  }}
+                  aria-label="Email for updates"
                   className="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#2EE6D6]/40 transition-all"
                 />
                 <motion.button
+                  type="submit"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="px-4 py-2.5 rounded-xl bg-[#2EE6D6] text-black text-xs font-bold hover:bg-[#1bc9b9] transition-colors"
                 >
                   Go
                 </motion.button>
-              </div>
+              </form>
+              {newsletterMessage && (
+                <p className="mt-2 text-xs text-gray-500">{newsletterMessage}</p>
+              )}
             </div>
           </div>
         </div>
@@ -165,9 +200,9 @@ export default function Footer() {
             © {new Date().getFullYear()} Smart Vision HR Solutions. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
-            <span className="text-gray-600 text-xs hover:text-gray-400 cursor-pointer transition-colors">Privacy Policy</span>
+            <a href="/privacy-policy.html" className="text-gray-600 text-xs hover:text-gray-400 transition-colors">Privacy Policy</a>
             <span className="text-gray-700">·</span>
-            <span className="text-gray-600 text-xs hover:text-gray-400 cursor-pointer transition-colors">Terms of Service</span>
+            <a href="/terms-of-service.html" className="text-gray-600 text-xs hover:text-gray-400 transition-colors">Terms of Service</a>
             <span className="text-gray-700">·</span>
             <span className="text-gray-600 text-xs">
               Built with{" "}

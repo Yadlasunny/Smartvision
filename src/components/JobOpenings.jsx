@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaMapMarkerAlt, FaBriefcase, FaArrowRight } from "react-icons/fa";
 import { useJobs } from "../context/JobsContext";
 
@@ -14,12 +15,19 @@ const cardVariants = {
 };
 
 export default function JobOpenings() {
-  const { jobs } = useJobs();
+  const { activeJobs } = useJobs();
+  const navigate = useNavigate();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const [showAll, setShowAll] = useState(false);
+  const [, setNow] = useState(Date.now());
 
-  const visibleJobs = showAll ? jobs : jobs.slice(0, 3);
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 60 * 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const visibleJobs = showAll ? activeJobs : activeJobs.slice(0, 3);
 
   return (
     <section id="jobs" className="bg-[#111111] section-pad">
@@ -52,7 +60,7 @@ export default function JobOpenings() {
           <AnimatePresence mode="popLayout">
           {visibleJobs.map((job, i) => (
             <motion.div
-              key={i}
+              key={job.id}
               variants={cardVariants}
               initial="hidden"
               animate={inView ? "visible" : "hidden"}
@@ -94,6 +102,8 @@ export default function JobOpenings() {
 
               {/* Apply button */}
               <motion.button
+                type="button"
+                onClick={() => navigate(`/jobs/${job.id}`)}
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
                 className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-[#2EE6D6]/30 text-[#2EE6D6] text-sm font-semibold group-hover:bg-[#2EE6D6] group-hover:text-black group-hover:border-[#2EE6D6] transition-all duration-300"
@@ -107,7 +117,7 @@ export default function JobOpenings() {
         </div>
 
         {/* View all button */}
-        {jobs.length > 3 && (
+        {activeJobs.length > 3 && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
@@ -123,6 +133,12 @@ export default function JobOpenings() {
             {showAll ? "Show Less ↑" : "View All Openings →"}
           </motion.button>
         </motion.div>
+        )}
+
+        {activeJobs.length === 0 && (
+          <p className="text-center text-gray-500 mt-10 text-sm">
+            No open job positions available right now. Please check back soon.
+          </p>
         )}
       </div>
     </section>

@@ -1,7 +1,13 @@
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
-import { FaUsers, FaFileInvoiceDollar, FaChartLine } from "react-icons/fa";
+import { AnimatePresence, motion, useInView } from "framer-motion";
+import { useRef, useState } from "react";
+import {
+  FaUsers,
+  FaFileInvoiceDollar,
+  FaChartLine,
+  FaUserTie,
+  FaClipboardCheck,
+  FaUniversity,
+} from "react-icons/fa";
 
 const services = [
   {
@@ -9,24 +15,48 @@ const services = [
     title: "Recruitment",
     color: "#2EE6D6",
     description:
-      "End-to-end talent acquisition for all industries. We source, screen, and place the right candidates quickly — from freshers to senior executives.",
-    features: ["Job profiling & sourcing", "Technical screening", "Interview coordination", "Offer negotiation"],
+      "We help companies hire qualified candidates quickly by sourcing, screening, and shortlisting talent for various roles across industries.",
+    features: ["Talent sourcing", "Profile screening", "Shortlisting support", "Interview pipeline management"],
   },
   {
     icon: FaFileInvoiceDollar,
-    title: "Payroll",
+    title: "Payroll Processing",
     color: "#F5B400",
     description:
-      "Accurate, compliant payroll processing so you can focus on growing your business. We handle everything from salary computation to tax filings.",
-    features: ["Monthly payroll processing", "PF / ESI compliance", "TDS calculations", "Payslip generation"],
+      "We manage employee salary processing, tax deductions, compliance, and payroll reports to help companies focus on their core business.",
+    features: ["Salary processing", "Tax and statutory deductions", "Compliance handling", "Payroll reporting"],
   },
   {
     icon: FaChartLine,
     title: "Business Planning",
     color: "#2EE6D6",
     description:
-      "Strategic HR consulting and workforce planning to align your people strategy with your business goals and drive sustainable growth.",
-    features: ["Workforce planning", "HR policy drafting", "Org design consulting", "Compliance advisory"],
+      "We support organizations with strategic HR planning, workforce planning, and growth strategies to improve operational efficiency.",
+    features: ["Strategic HR planning", "Workforce planning", "Growth strategy support", "Operational alignment"],
+  },
+  {
+    icon: FaUserTie,
+    title: "Executive Search",
+    color: "#F5B400",
+    description:
+      "We specialize in identifying and recruiting senior-level executives and leadership talent for organizations.",
+    features: ["Leadership mapping", "Confidential hiring", "Senior talent outreach", "Executive assessment"],
+  },
+  {
+    icon: FaClipboardCheck,
+    title: "HR Consulting",
+    color: "#2EE6D6",
+    description:
+      "We provide expert HR advice including HR policies, performance management systems, compliance guidance, and workforce optimization.",
+    features: ["Policy frameworks", "Performance systems", "Compliance guidance", "Workforce optimization"],
+  },
+  {
+    icon: FaUniversity,
+    title: "Campus Hiring",
+    color: "#F5B400",
+    description:
+      "We help companies recruit fresh graduates by organizing campus recruitment drives and internship hiring programs.",
+    features: ["Campus drives", "Graduate recruitment", "Internship hiring", "Pre-placement coordination"],
   },
 ];
 
@@ -42,6 +72,7 @@ const cardVariants = {
 export default function Services() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
+  const [activeService, setActiveService] = useState(services[0]);
 
   return (
     <section id="services" className="bg-[#0B0B0B] section-pad">
@@ -69,61 +100,88 @@ export default function Services() {
           </p>
         </motion.div>
 
-        {/* Cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Service buttons */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 mb-8">
           {services.map((svc, i) => {
             const Icon = svc.icon;
+            const isActive = activeService.title === svc.title;
+
             return (
-              <motion.div
+              <motion.button
                 key={svc.title}
+                type="button"
                 variants={cardVariants}
                 initial="hidden"
                 animate={inView ? "visible" : "hidden"}
                 custom={i}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="group relative rounded-3xl glass border border-white/10 p-8 overflow-hidden cursor-default card-glow card-glow-hover transition-all duration-300"
+                whileHover={{ y: -3 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setActiveService(svc)}
+                className={`rounded-2xl px-4 py-4 text-left border transition-all duration-300 ${
+                  isActive
+                    ? "bg-white/10 border-white/25 shadow-lg"
+                    : "glass border-white/10 hover:border-white/20"
+                }`}
               >
-                {/* Top glow accent */}
                 <div
-                  className="absolute -top-20 -right-20 w-48 h-48 rounded-full blur-[60px] opacity-0 group-hover:opacity-30 transition-opacity duration-500"
-                  style={{ background: svc.color }}
-                />
-
-                {/* Icon */}
-                <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6"
-                  style={{ background: `${svc.color}18`, border: `1.5px solid ${svc.color}30` }}
+                  className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
+                  style={{ background: `${svc.color}18`, border: `1px solid ${svc.color}30` }}
                 >
-                  <Icon size={24} style={{ color: svc.color }} />
+                  <Icon size={18} style={{ color: svc.color }} />
                 </div>
-
-                {/* Title */}
-                <h3 className="text-xl font-bold text-white mb-3">{svc.title}</h3>
-
-                {/* Description */}
-                <p className="text-gray-400 text-sm leading-relaxed mb-6">{svc.description}</p>
-
-                {/* Feature list */}
-                <ul className="space-y-2">
-                  {svc.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm text-gray-300">
-                      <span
-                        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                        style={{ background: svc.color }}
-                      />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Bottom border accent */}
-                <div
-                  className="absolute bottom-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{ background: `linear-gradient(to right, transparent, ${svc.color}, transparent)` }}
-                />
-              </motion.div>
+                <p className="text-sm font-semibold text-white leading-tight">{svc.title}</p>
+              </motion.button>
             );
           })}
+        </div>
+
+        {/* Dynamic service content */}
+        <div className="relative min-h-[280px] sm:min-h-[240px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeService.title}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="group relative rounded-3xl glass border border-white/10 p-6 md:p-8 overflow-hidden card-glow"
+            >
+              <div
+                className="absolute -top-20 -right-20 w-48 h-48 rounded-full blur-[60px] opacity-30"
+                style={{ background: activeService.color }}
+              />
+
+              <div
+                className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
+                style={{
+                  background: `${activeService.color}18`,
+                  border: `1.5px solid ${activeService.color}30`,
+                }}
+              >
+                <activeService.icon size={24} style={{ color: activeService.color }} />
+              </div>
+
+              <h3 className="text-2xl font-bold text-white mb-3">{activeService.title}</h3>
+              <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-6 max-w-3xl">
+                {activeService.description}
+              </p>
+
+              <h4 className="text-sm uppercase tracking-widest text-gray-400 mb-3">
+                Service Highlights
+              </h4>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {activeService.features.map((feature) => (
+                  <li key={feature} className="flex items-center gap-2 text-sm text-gray-200">
+                    <span
+                      className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                      style={{ background: activeService.color }}
+                    />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </section>
